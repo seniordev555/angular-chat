@@ -10,11 +10,11 @@ export class AuthService {
   constructor(private _apiService: ApiService) { }
 
   login(data) {
-    return this._apiService.post('/auth/login', data, false);
-      // .map((res: any) => {
-      //   this._apiService.setAuthData(res);
-      //   return true;
-      // });
+    return this._apiService.post('/auth/login', data, false)
+      .map((res: any) => {
+        this._apiService.setAuthData(res);
+        return true;
+      });
   }
 
   register(data) {

@@ -50,6 +50,13 @@ export class ApiService {
     this._setAuthData(data.token);
   }
 
+  reset() {
+    sessionStorage.removeItem('angular_chat_auth_data');
+    sessionStorage.removeItem('angular_chat_auth_user');
+    localStorage.removeItem('angular_chat_auth_data');
+    localStorage.removeItem('angular_chat_auth_user');
+  }
+
   private _setUserData(user: any) {
     this._sessionUser = user;
     sessionStorage.setItem('angular_chat_auth_user', JSON.stringify(user));

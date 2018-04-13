@@ -1,0 +1,6 @@
+<button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5"> User </button>
+<mat-menu #profile="matMenu" class="mymegamenu">
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>settings</mat-icon> Log out
+  </button>
+</mat-menu>
