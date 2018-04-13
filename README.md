@@ -1,27 +1,54 @@
-# AngularChat
+# Angular Chat
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+A web application that allows users to send message to friends, team and family. This is built by Angular 5, Material UI and Node.js.
 
-## Development server
+Backend:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* Node.js
+* Express.js
+* MongoDB
+* Passport-JWT
 
-## Code scaffolding
+Frontend:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+* Angular 5
+* Material UI
+* Scss
 
-## Build
+## Prerequisites
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+You will need the following resources properly installed on the machine.
 
-## Running unit tests
+* [Git](https://git-scm.com)
+* [Node.js](https://nodejs.org) (with NPM)
+* [MongoDB](https://www.mongodb.com)
+* [Angular CLI](https://cli.angular.io/)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Getting Started
 
-## Running end-to-end tests
+```bash
+# Install the dependencies.
+$ cd .
+$ npm install
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Run the App
 
-## Further help
+```bash
+$ cd .
+$ npm run dev
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+By default, you can visit the API in your web browser at `http://localhost:5000`
+
+And you can access the frontend by visiting [http://localhost:4200](http://localhost:4200)
+
+## Screenshots
+
+### Login
+![image](https://user-images.githubusercontent.com/17595822/38758931-fff41db2-3f7b-11e8-80f9-83cdc1116fcb.png)
+
+### Register
+![image](https://user-images.githubusercontent.com/17595822/38758942-109f0974-3f7c-11e8-8816-c4496d20a98a.png)
+
+...

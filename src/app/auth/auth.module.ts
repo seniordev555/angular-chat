@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatInputModule, MatCardModule, MatIconModule } from '@angular/material';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  MatButtonModule,
+  MatInputModule,
+  MatCardModule,
+  MatIconModule,
+  MatCheckboxModule
+} from '@angular/material';
 
 import { SharedModule } from '../shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
@@ -17,10 +23,12 @@ import { AuthService } from './auth.service';
     SharedModule,
     AuthRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     MatButtonModule,
     MatInputModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatCheckboxModule
   ],
   declarations: [LoginComponent, RegisterComponent, AuthComponent],
   providers: [AuthService]

@@ -43,3 +43,5 @@ $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-
   flex-direction: column;
   min-height: 100vh;
 }
+
+@import "~ngx-toastr/toastr.css";

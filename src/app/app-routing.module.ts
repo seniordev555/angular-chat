@@ -11,6 +11,10 @@ const routes: Routes = [
     path: '',
     loadChildren: './auth/auth.module#AuthModule'
   },
+  {
+    path: '**',
+    redirectTo: '/'
+  }
 ];
 
 @NgModule({

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../auth.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -19,7 +21,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private _authSerivce: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _toastr: ToastrService
    ) { }
 
   ngOnInit() {
@@ -47,6 +50,9 @@ export class LoginComponent implements OnInit {
     this._authSerivce.login(this.loginForm.value)
       .subscribe(success => {
         this._router.navigate(['/']);
+        this._toastr.success('Login Successfully');
+      }, error => {
+        this._toastr.error(error.error.message);
       });
   }
 }
