@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../auth.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -14,7 +16,11 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private _authSerivce: AuthService,
+    private _router: Router
+   ) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -37,4 +43,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  submit() {
+    this._authSerivce.login(this.loginForm.value)
+      .subscribe(success => {
+        this._router.navigate(['/']);
+      });
+  }
 }

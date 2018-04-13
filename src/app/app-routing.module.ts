@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'login'
+    loadChildren: './home/home.module#HomeModule'
   },
   {
     path: '',

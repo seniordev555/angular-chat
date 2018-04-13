@@ -9,6 +9,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthComponent } from './auth.component';
+import { AuthService } from './auth.service';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { AuthComponent } from './auth.component';
     MatCardModule,
     MatIconModule
   ],
-  declarations: [LoginComponent, RegisterComponent, AuthComponent]
+  declarations: [LoginComponent, RegisterComponent, AuthComponent],
+  providers: [AuthService]
 })
 export class AuthModule { }

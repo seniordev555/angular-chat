@@ -5,12 +5,13 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "dev:client": "ng serve",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev:server": "nodemon server/index.js --exec \"node -r dotenv/config\""
+    "dev:server": "nodemon server/index.js --exec \"node -r dotenv/config\"",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
   "private": true,
   "dependencies": {
@@ -30,6 +31,7 @@
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0-beta.3",
     "compression": "^1.7.2",
+    "concurrently": "^3.5.1",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "cors": "^2.8.4",
