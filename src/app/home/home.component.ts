@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._userService.profile()
       .subscribe(success => {
-        console.log(success);
+        // console.log(success);
       }, error => {
         console.log(error);
       });

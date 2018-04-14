@@ -12,6 +12,7 @@ export class ApiService {
   private _sessionAuthData: any;
   private _sessionUser: any;
   private _isAuthorized: boolean = false;
+  private _rememberMe: boolean = false;
 
   constructor(private _httpClient: HttpClient) { }
 
@@ -19,6 +20,12 @@ export class ApiService {
     this._isAuthorized = false;
     this._sessionAuthData = JSON.parse(sessionStorage.getItem('angular_chat_auth_data'));
     this._sessionUser = JSON.parse(sessionStorage.getItem('angular_chat_auth_user'));
+    if (!this._sessionAuthData) {
+      this._sessionAuthData = JSON.parse(localStorage.getItem('angular_chat_auth_data'));
+    }
+    if (!this._sessionUser) {
+      this._sessionUser = JSON.parse(localStorage.getItem('angular_chat_auth_user'));
+    }
 
     if (this._sessionAuthData && this._sessionUser) {
       this._isAuthorized = true;
@@ -45,11 +52,10 @@ export class ApiService {
         refreshToken: authData.refreshToken,
         email: userData.email
       };
-      const self = this;
       return this._httpClient.post(`${environment.apiUrl}/auth/refresh-token`, body)
         .switchMap(res => {
-          self._setAuthData(res);
-          return self._httpClient.get(`${environment.apiUrl}${url}`, self._httpOptions(isAuth));
+          this._setAuthData(res);
+          return this._httpClient.get(`${environment.apiUrl}${url}`, this._httpOptions(isAuth));
         });
     }
     return this._httpClient.get(`${environment.apiUrl}${url}`, this._httpOptions(isAuth));
@@ -73,7 +79,8 @@ export class ApiService {
     return this._httpClient.post(`${environment.apiUrl}${url}`, data, this._httpOptions(isAuth));
   }
 
-  setAuthData(data: any) {
+  setAuthData(data: any, rememberMe: boolean = false) {
+    this._rememberMe = rememberMe;
     this._setUserData(data.user);
     this._setAuthData(data.token);
   }
@@ -88,11 +95,17 @@ export class ApiService {
   private _setUserData(user: any) {
     this._sessionUser = user;
     sessionStorage.setItem('angular_chat_auth_user', JSON.stringify(user));
+    if (this._rememberMe) {
+      localStorage.setItem('angular_chat_auth_user', JSON.stringify(user));
+    }
   }
 
   private _setAuthData(data: any) {
     this._sessionAuthData = data;
     sessionStorage.setItem('angular_chat_auth_data', JSON.stringify(data));
+    if (this._rememberMe) {
+      localStorage.setItem('angular_chat_auth_data', JSON.stringify(data));
+    }
   }
 
   private _httpOptions(isAuth) {
