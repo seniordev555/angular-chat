@@ -38,11 +38,39 @@ export class ApiService {
   }
 
   get(url, isAuth = true) {
-    return this._refreshToken(this._httpClient.get(`${environment.apiUrl}${url}`, this._httpOptions(isAuth)));
+    const authData = this.getAuthData();
+    const userData = this.getUserData();
+    if (isAuth && authData && moment(authData.expiresIn) < moment()) {
+      const body = {
+        refreshToken: authData.refreshToken,
+        email: userData.email
+      };
+      const self = this;
+      return this._httpClient.post(`${environment.apiUrl}/auth/refresh-token`, body)
+        .switchMap(res => {
+          self._setAuthData(res);
+          return self._httpClient.get(`${environment.apiUrl}${url}`, self._httpOptions(isAuth));
+        });
+    }
+    return this._httpClient.get(`${environment.apiUrl}${url}`, this._httpOptions(isAuth));
   }
 
   post(url, data, isAuth = true) {
-    return this._refreshToken(this._httpClient.post(`${environment.apiUrl}${url}`, data, this._httpOptions(isAuth)));
+    const authData = this.getAuthData();
+    const userData = this.getUserData();
+    if (isAuth && authData && moment(authData.expiresIn) < moment()) {
+      const body = {
+        refreshToken: authData.refreshToken,
+        email: userData.email
+      };
+      const self = this;
+      return this._httpClient.post(`${environment.apiUrl}/auth/refresh-token`, body)
+        .switchMap(res => {
+          self._setAuthData(res);
+          return self._httpClient.post(`${environment.apiUrl}${url}`, data, self._httpOptions(isAuth))
+        });
+    }
+    return this._httpClient.post(`${environment.apiUrl}${url}`, data, this._httpOptions(isAuth));
   }
 
   setAuthData(data: any) {
@@ -65,24 +93,6 @@ export class ApiService {
   private _setAuthData(data: any) {
     this._sessionAuthData = data;
     sessionStorage.setItem('angular_chat_auth_data', JSON.stringify(data));
-  }
-
-  private _refreshToken(requestHandler) {
-    const authData = this.getAuthData();
-    const userData = this.getUserData();
-    if (authData && moment(authData.expiresIn) < moment()) {
-      const body = {
-        refreshToken: authData.refreshToken,
-        email: userData.email
-      };
-      const self = this;
-      return this._httpClient.post(`${environment.apiUrl}/auth/refresh-token`, body)
-        .switchMap(res => {
-          self._setAuthData(res);
-          return requestHandler;
-        });
-    }
-    return requestHandler;
   }
 
   private _httpOptions(isAuth) {
