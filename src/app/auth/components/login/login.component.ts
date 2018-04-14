@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
+  loading = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private _authSerivce: AuthService,
@@ -47,11 +49,14 @@ export class LoginComponent implements OnInit {
   }
 
   submit() {
+    this.loading = true;
     this._authSerivce.login(this.loginForm.value)
       .subscribe(success => {
+        this.loading = false;
         this._router.navigate(['/']);
         this._toastr.success('Login Successfully');
       }, error => {
+        this.loading = false;
         this._toastr.error(error.error.message);
       });
   }

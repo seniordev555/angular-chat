@@ -19,6 +19,8 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
 
+  loading = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private _authSerivce: AuthService,
@@ -58,12 +60,15 @@ export class RegisterComponent implements OnInit {
   }
 
   submit() {
+    this.loading = true;
     this._authSerivce.register(
       pick(this.registerForm.value, ['email', 'username', 'password'])
     ).subscribe(success => {
+      this.loading = false;
       this._router.navigate(['/login']);
       this._toastr.success('Registered Successfully');
     }, error => {
+      this.loading = false;
       this._toastr.error(error.error.message);
     });
   }
