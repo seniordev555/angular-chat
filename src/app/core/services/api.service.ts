@@ -75,9 +75,10 @@ export class ApiService {
         refreshToken: authData.refreshToken,
         email: userData.email
       };
-      return this._httpClient.post(`${environment.apiUrl}/auth/refresh`, body)
+      const self = this;
+      return this._httpClient.post(`${environment.apiUrl}/auth/refresh-token`, body)
         .switchMap(res => {
-          this._setAuthData(res);
+          self._setAuthData(res);
           return requestHandler;
         });
     }

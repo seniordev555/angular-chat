@@ -12,4 +12,8 @@ export class UserService {
     this._router.navigate(['/login']);
   }
 
+  profile() {
+    return this._apiService.get('/users/profile', true);
+  }
+
 }
