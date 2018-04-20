@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://0.0.0.0:5000/api/v1'
+  apiUrl: 'http://0.0.0.0:5000/api/v1',
+  socketUrl: 'http://0.0.0.0:5000'
 };

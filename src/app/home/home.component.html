@@ -6,7 +6,7 @@
       </a>
     </div>
 
-    <button mat-icon-button (click)="snav.toggle()" value="sidebarclosed">
+    <button mat-icon-button (click)="snav.toggle()" *ngIf="false" value="sidebarclosed">
       <mat-icon>menu</mat-icon>
     </button>
     <span fxFlex></span>
@@ -14,13 +14,47 @@
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0">
-    <mat-sidenav #snav id="snav" class="dark-sidebar pl-xs" [mode]="mobileQuery.matches ? 'side' : 'over'" fixedTopGap="0" [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches"  >
+    <mat-sidenav #snav id="snav" class="dark-sidebar pl-xs" [mode]="mobileQuery.matches ? 'side' : 'over'" fixedTopGap="0" [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches" *ngIf="false" >
       <app-sidebar></app-sidebar>
     </mat-sidenav>
 
     <mat-sidenav-content class="page-wrapper">
       <div class="page-content">
-        <router-outlet></router-outlet>
+        <mat-card class="channel-chat-message-container" *ngIf="!loading">
+          <mat-card-header>
+            <mat-card-title>{{channel.name}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="channel-chat-messages">
+            <div class="channel-chat-message-item">
+              <div class="chat-message-item" *ngFor="let message of messages">
+                <div class="chat-message-item__header">
+                  <div class="chat-message-item__sender">{{message.author.username}}</div>
+                  <div class="chat-message-item__timestamp">
+                    {{message.createdAt | date: 'short'}}
+                  </div>
+                </div>
+                <div class="chat-message-item__content">
+                  <div class="chat-message-item__gutter">
+                    <div class="chat-message-item__timestamp text-secondary">
+                      {{message.createdAt | date: 'shortTime'}}
+                    </div>
+                  </div>
+                  <div class="chat-message-item__body">
+                    {{message.body}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions class="channel-chat-input-container">
+            <form [formGroup]="textForm" (ngSubmit)="textForm.valid && send()">
+              <mat-form-field>
+                <input type="text" matInput placeholder="Enter text" formControlName="message">
+              </mat-form-field>
+              <button mat-raised-button color="primary">Send</button>
+            </form>
+          </mat-card-actions>
+        </mat-card>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

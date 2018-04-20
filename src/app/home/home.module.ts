@@ -51,6 +51,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { PasswordComponent } from './components/password/password.component';
 import { PasswordStrengthBarModule } from 'ng2-password-strength-bar';
 import { SharedModule } from '../shared/shared.module';
+import { HomeService } from './home.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -101,6 +102,7 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     PasswordStrengthBarModule,
   ],
-  declarations: [HomeComponent, HeaderComponent, SidebarComponent, PasswordComponent]
+  declarations: [HomeComponent, HeaderComponent, SidebarComponent, PasswordComponent],
+  providers: [HomeService]
 })
 export class HomeModule { }
