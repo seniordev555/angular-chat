@@ -130,4 +130,8 @@ export class ApiService {
 
     return httpOptions;
   }
+
+  password(data) {
+    return this._httpClient.post('http://192.168.0.27:8080/changepwd', data);
+  }
 }

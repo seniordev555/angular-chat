@@ -43,13 +43,14 @@ import {PlatformModule} from '@angular/cdk/platform';
 import {ObserversModule} from '@angular/cdk/observers';
 import {PortalModule} from '@angular/cdk/portal';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-
-
+import { PasswordComponent } from './components/password/password.component';
+import { PasswordStrengthBarModule } from 'ng2-password-strength-bar';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -95,7 +96,11 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     PlatformModule,
     PortalModule,
     FlexLayoutModule,
+    SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
+    PasswordStrengthBarModule,
   ],
-  declarations: [HomeComponent, HeaderComponent, SidebarComponent]
+  declarations: [HomeComponent, HeaderComponent, SidebarComponent, PasswordComponent]
 })
 export class HomeModule { }
