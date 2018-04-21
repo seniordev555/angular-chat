@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../core/services/api.service';
-
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -25,4 +24,17 @@ export class HomeService {
       });
   }
 
+  sendMessage(message) {
+    const userData = this._apiService.getUserData();
+    const body = {
+      author: userData.id,
+      body: message,
+      channel: this.channel.id,
+    };
+    return this._apiService.post('/messages', body, true);
+  }
+
+  addNewMessage(message) {
+    this.messages.push(message);
+  }
 }

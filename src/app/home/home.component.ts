@@ -1,6 +1,8 @@
 import * as $ from 'jquery';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MediaMatcher } from '@angular/cdk/layout';
+import * as socketIo from 'socket.io-client';
+import { environment } from '../../environments/environment';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { UserService } from '../core/services/user.service';
@@ -17,6 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   channel: any;
   messages: any;
   textForm: FormGroup;
+  socket: any = socketIo(environment.socketUrl, { path: '/api/chat' });
 
   private _mobileQueryListener: () => void;
 
@@ -28,12 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.textForm = this.formBuilder.group({
-      'message': [
-        '',
-        Validators.compose([
-          Validators.required,
-        ])
-      ]
+      'message': ''
     });
 
     this.loading = true;
@@ -41,6 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .switchMap(() => this._homeService.loadChannels())
       .switchMap(() => this._homeService.loadMessages())
       .subscribe(() => {
+        this.initSocket();
         this.loading = false;
         this.channel = this._homeService.channel;
         this.messages = this._homeService.messages;
@@ -49,11 +48,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  initSocket() {
+    this.socket.on('new message', (message) => {
+      // this.messages.push(message);
+      this._homeService.addNewMessage(message);
+    });
+  }
+
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
   send(): void {
-    alert(this.textForm.value.message);
+    if (this.textForm.value.message == '') return;
+    this._homeService.sendMessage(this.textForm.value.message).subscribe(() => {
+      this.textForm.reset({ 'message': '' });
+    });
   }
 }
