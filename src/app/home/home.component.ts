@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { UserService } from '../core/services/user.service';
+import { ApiService } from '../core/services/api.service';
 import { HomeService } from './home.service';
 
 @Component({
@@ -20,10 +21,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   messages: any;
   textForm: FormGroup;
   socket: any = socketIo(environment.socketUrl, { path: '/api/chat' });
+  typing = '';
+  user: any;
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _userService: UserService, private _homeService: HomeService, private formBuilder: FormBuilder) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _userService: UserService, private _homeService: HomeService, private formBuilder: FormBuilder, private _apiService: ApiService) {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -33,6 +36,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.textForm = this.formBuilder.group({
       'message': ''
     });
+    this.user = this._apiService.getUserData();
 
     this.loading = true;
     this._userService.profile()
@@ -53,6 +57,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       // this.messages.push(message);
       this._homeService.addNewMessage(message);
     });
+    this.socket.on('chat:typing', (payload) => {
+      if(payload.id !== this.user.id) {
+        this.typing = payload.username + ' is typing...'
+        setTimeout(() => {
+          this.typing = ''
+        }, 2000);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -64,5 +76,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._homeService.sendMessage(this.textForm.value.message).subscribe(() => {
       this.textForm.reset({ 'message': '' });
     });
+  }
+
+  onChange(e) {
+    this.socket.emit('chat:typed', this.user);
   }
 }

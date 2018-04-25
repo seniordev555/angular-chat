@@ -49,10 +49,11 @@
           <mat-card-actions class="channel-chat-input-container">
             <form [formGroup]="textForm" (ngSubmit)="textForm.valid && send()">
               <mat-form-field>
-                <input type="text" matInput placeholder="Enter text" formControlName="message">
+                <input type="text" matInput placeholder="Enter text" formControlName="message" (keypress)="onChange($event)">
               </mat-form-field>
               <button mat-raised-button color="primary">Send</button>
             </form>
+            <p>{{typing}}</p>
           </mat-card-actions>
         </mat-card>
       </div>
